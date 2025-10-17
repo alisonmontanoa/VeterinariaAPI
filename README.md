@@ -16,8 +16,13 @@ El sistema está estructurado por capas:
 - SQL Server  
 - Postman (para pruebas de API)
 
-## 🚀 Ejecución del Proyecto
+## Ejecución del Proyecto
 1. Clonar el repositorio:
    ```bash
    git clone https://github.com/alisonmontanoa/VeterinariaAPI.git
    cd VeterinariaAPI
+
+## Pruebas con Postman
+Se incluye la colección:
+Postman/VeterinariaAPI.postman_collection.json
+Contiene todos los endpoints configurados con sus métodos, URL y body inicial.
