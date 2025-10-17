@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "b6de3c31-1e9d-4a47-ad8f-ffe7d72487ea",
+		"name": "Caso 1 - Registrar Dueño y Mascota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Registrar Dueño 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dueno\": { \"nombre\": \"Natalia Montaño\", \"telefono\": \"68529413\", \"direccion\": \"Av. Victor Ustariz\" },\r\n    \"mascota\": { \"nombre\": \"Charlie\", \"especie\": \"Gato\", \"raza\": \"Angora\", \"edad\": 4 }\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/dueno/registrar",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"dueno",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar Dueño 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dueno\": { \"nombre\": \"Carlos Gutierrez\", \"telefono\": \"78945612\", \"direccion\": \"Av. America 123\" },\r\n  \"mascota\": { \"nombre\": \"Luna\", \"especie\": \"Gato\", \"raza\": \"Siames\", \"edad\": 2 }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/dueno/registrar",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"dueno",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
