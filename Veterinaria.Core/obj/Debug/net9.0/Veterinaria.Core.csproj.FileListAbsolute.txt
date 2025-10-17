@@ -1,0 +1,12 @@
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\bin\Debug\net9.0\Veterinaria.Core.deps.json
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\bin\Debug\net9.0\Veterinaria.Core.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\bin\Debug\net9.0\Veterinaria.Core.pdb
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.csproj.AssemblyReference.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.AssemblyInfoInputs.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.AssemblyInfo.cs
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.csproj.CoreCompileInputs.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\refint\Veterinaria.Core.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\Veterinaria.Core.pdb
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Core\obj\Debug\net9.0\ref\Veterinaria.Core.dll

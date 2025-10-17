@@ -1,0 +1,17 @@
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Infrastructure.deps.json
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Infrastructure.runtimeconfig.json
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Infrastructure.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Infrastructure.pdb
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Core.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\bin\Debug\net9.0\Veterinaria.Core.pdb
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.csproj.AssemblyReference.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.AssemblyInfoInputs.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.AssemblyInfo.cs
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterina.DF630E2B.Up2Date
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\refint\Veterinaria.Infrastructure.dll
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.pdb
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\Veterinaria.Infrastructure.genruntimeconfig.cache
+C:\Docs\TECNO WEB I\Veterinaria\Veterinaria.Infrastructure\obj\Debug\net9.0\ref\Veterinaria.Infrastructure.dll
