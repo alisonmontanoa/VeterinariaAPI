@@ -1,14 +1,17 @@
-# Archivos temporales y binarios
+# ==================================================
+# ARCHIVOS TEMPORALES Y BINARIOS
+# ==================================================
 [Bb]in/
 [Oo]bj/
-*.dll
-*.exe
 *.pdb
 *.cache
-*.json
-.vs/
+*.dll
+*.exe
 
-## === VISUAL STUDIO ===
+# ==================================================
+# VISUAL STUDIO
+# ==================================================
+.vs/
 *.user
 *.suo
 *.userosscache
@@ -16,31 +19,118 @@
 *.VC.db
 *.VC.opendb
 
-## === VISUAL STUDIO CODE ===
+# ==================================================
+# VISUAL STUDIO CODE
+# ==================================================
 .vscode/
 .history/
 *.code-workspace
 
-## === PAQUETES Y BINARIOS ===
+# ==================================================
+# PAQUETES Y DEPENDENCIAS
+# ==================================================
 *.nupkg
 *.snupkg
-*.nuspec
 packages/
-*.exe
-*.dll
-*.pdb
 
-## === SISTEMA OPERATIVO ===
+# ==================================================
+# SISTEMA OPERATIVO
+# ==================================================
 *.DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-## === CONFIGURACIONES SENSIBLES ===
-appsettings.*.json
-!appsettings.json  # mantiene solo el archivo base visible
+# ==================================================
+# CONFIGURACIONES SENSIBLES
+# ==================================================
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
+appsettings.Secrets.json
+# NOTA: appsettings.json BASE SÍ se incluye
 
-## === PUBLICACION ===
+# ==================================================
+# PUBLICACIÓN Y DEPLOY
+# ==================================================
 publish/
-.vs/
+bin/Release/
+bin/Debug/
 
+# ==================================================
+# LOGS Y ARCHIVOS TEMPORALES
+# ==================================================
+*.log
+*.tmp
+*.temp
+
+# ==================================================
+# DATOS LOCALES
+# ==================================================
+*.db
+*.mdf
+*.ldf
+/Veterinaria.Api/obj/Debug/net9.0/ref/Veterinaria.Api.dll
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Api.deps.json
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Api.pdb
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Api.exe
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Api.dll
+/Veterinaria.Api/bin/Debug/net9.0/System.Windows.Extensions.dll
+/Veterinaria.Api/bin/Debug/net9.0/System.Security.Permissions.dll
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Core.dll
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Infrastructure.dll
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Infrastructure.pdb
+/Veterinaria.Api/bin/Debug/net9.0/Veterinaria.Core.pdb
+/Veterinaria.Api/Controllers/CitaController.cs
+/Veterinaria.Api/bin/Debug/net9.0/System.Security.Cryptography.ProtectedData.dll
+/Veterinaria.Api/bin/Debug/net9.0/System.Configuration.ConfigurationManager.dll
+/Veterinaria.Api/obj/Debug/net9.0/refint/Veterinaria.Api.dll
+/Veterinaria.Api/obj/Debug/net9.0/ApiEndpoints.json
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.dll
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.pdb
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.AssemblyInfoInputs.cache
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.assets.cache
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.csproj.AssemblyReference.cache
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.csproj.CoreCompileInputs.cache
+/Veterinaria.Api/obj/project.nuget.cache
+/Veterinaria.Api/obj/Debug/net9.0/apphost.exe
+/Veterinaria.Api/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json
+/Veterinaria.Api/obj/Debug/net9.0/rjsmrazor.dswa.cache.json
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.AssemblyInfo.cs
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.MvcApplicationPartsAssemblyInfo.cs
+/Veterinaria.Api/obj/project.assets.json
+/Veterinaria.Api/obj/Veterinaria.Api.csproj.nuget.dgspec.json
+/Veterinaria.Core/bin/Debug/net9.0/Veterinaria.Core.dll
+/Veterinaria.Core/bin/Debug/net9.0/Veterinaria.Core.pdb
+/Veterinaria.Api/obj/Veterinaria.Api.csproj.nuget.g.targets
+/Veterinaria.Api/obj/Veterinaria.Api.csproj.nuget.g.props
+/Veterinaria.Api/Properties/launchSettings.json
+/Veterinaria.Api/obj/Debug/net9.0/Veterinaria.Api.csproj.FileListAbsolute.txt
+/Veterinaria.Core/obj/Debug/net9.0/ref/Veterinaria.Core.dll
+/Veterinaria.Core/obj/Debug/net9.0/refint/Veterinaria.Core.dll
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.pdb
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.dll
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.AssemblyInfo.cs
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.AssemblyInfoInputs.cache
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.csproj.CoreCompileInputs.cache
+/Veterinaria.Core/obj/Debug/net9.0/Veterinaria.Core.csproj.FileListAbsolute.txt
+/Veterinaria.Infrastructure/bin/Debug/net9.0/Veterinaria.Core.dll
+/Veterinaria.Infrastructure/bin/Debug/net9.0/Veterinaria.Core.pdb
+/Veterinaria.Infrastructure/bin/Debug/net9.0/Veterinaria.Infrastructure.deps.json
+/Veterinaria.Infrastructure/bin/Debug/net9.0/Veterinaria.Infrastructure.dll
+/Veterinaria.Infrastructure/bin/Debug/net9.0/Veterinaria.Infrastructure.pdb
+/Veterinaria.Infrastructure/obj/Debug/net9.0/ref/Veterinaria.Infrastructure.dll
+/Veterinaria.Infrastructure/obj/Debug/net9.0/refint/Veterinaria.Infrastructure.dll
+/Veterinaria.Infrastructure/obj/Veterinaria.Infrastructure.csproj.nuget.g.props
+/Veterinaria.Infrastructure/obj/Veterinaria.Infrastructure.csproj.nuget.dgspec.json
+/Veterinaria.Infrastructure/Queries/CitaQueries.cs
+/Veterinaria.Infrastructure/obj/project.nuget.cache
+/Veterinaria.Infrastructure/obj/project.assets.json
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.pdb
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.AssemblyInfo.cs
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.AssemblyInfoInputs.cache
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.assets.cache
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.csproj.AssemblyReference.cache
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.csproj.CoreCompileInputs.cache
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.csproj.FileListAbsolute.txt
+/Veterinaria.Infrastructure/obj/Debug/net9.0/Veterinaria.Infrastructure.dll
