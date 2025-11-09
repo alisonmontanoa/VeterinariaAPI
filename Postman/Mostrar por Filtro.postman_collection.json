@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "d307c30b-8856-4e1f-8c35-6cfc598bb6fa",
+		"name": "Mostrar por Filtro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Filtrar por Nombre de Dueño",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Dueno/filtrar-duenos?nombre=Natalia",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Dueno",
+						"filtrar-duenos"
+					],
+					"query": [
+						{
+							"key": "nombre",
+							"value": "Natalia"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Especie de Mascota",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/Mascota/filtrar-mascotas?especie=Perro",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"Mascota",
+						"filtrar-mascotas"
+					],
+					"query": [
+						{
+							"key": "especie",
+							"value": "Perro"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Estado de Cita",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/Cita/filtrar-citas?estado=Pendiente",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"Cita",
+						"filtrar-citas"
+					],
+					"query": [
+						{
+							"key": "estado",
+							"value": "Pendiente"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Servicios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/Servicio/filtrar-servicios",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"Servicio",
+						"filtrar-servicios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtrar por Veterinarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/Veterinario/filtrar-veterinarios",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"Veterinario",
+						"filtrar-veterinarios"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

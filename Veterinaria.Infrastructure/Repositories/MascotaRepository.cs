@@ -6,24 +6,59 @@ using System.Text;
 using System.Threading.Tasks;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Interfaces;
+using Veterinaria.Core.QueryFilters;
 using Veterinaria.Infrastructure.Data;
+using Veterinaria.Infrastructure.Queries;
+using Veterinaria.Core.Enums;
 
 namespace Veterinaria.Infrastructure.Repositories
 {
-    public class MascotaRepository : IMascotaRepository
+    public class MascotaRepository : BaseRepository<Mascota>, IMascotaRepository
     {
-        private readonly VeterinariaContext _context;
-        public MascotaRepository(VeterinariaContext context) => _context = context;
+        private readonly IDapperContext _dapper;
 
-        public async Task AddAsync(Mascota entity)
+        // private readonly VeterinariaContext _context;
+
+        public MascotaRepository(VeterinariaContext context, IDapperContext dapper) : base(context)
         {
-            _context.Mascotas.Add(entity);
-            await _context.SaveChangesAsync();
+            //_context = context;
+            _dapper = dapper;
         }
 
-        public async Task SaveChangesAsync()
+        public async Task<int> CountByDuenoIdAsync(int duenoId)
         {
-            await _context.SaveChangesAsync();
+            return await _context.Mascotas.CountAsync(m => m.DuenoId == duenoId);
+        }
+
+        public async Task<IEnumerable<Mascota>> GetByDuenoIdAsync(int duenoId)
+        {
+            return await _context.Mascotas
+                .Where(m => m.DuenoId == duenoId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Mascota>> GetAllMascotasDapperAsync(MascotaQueryFilter filters)
+        {
+            try
+            {
+                var sql = _dapper.Provider switch
+                {
+                    DatabaseProvider.SqlServer => MascotaQueries.MascotaQuerySqlServer,
+                    DatabaseProvider.MySql => MascotaQueries.MascotaQueryMySQL,
+                    _ => throw new NotSupportedException("Proveedor no soportado")
+                };
+
+                return await _dapper.QueryAsync<Mascota>(sql, new
+                {
+                    filters.Especie,
+                    filters.Raza,
+                    filters.DuenoId
+                });
+            }
+            catch (Exception err)
+            {
+                throw new Exception(err.Message);
+            }
         }
 
     }

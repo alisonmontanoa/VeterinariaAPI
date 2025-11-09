@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Veterinaria.Core.Entities
 {
-    public class Cita
+    public class Cita : BaseEntity
     {
-        public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public string Motivo { get; set; } = null!;
         public string Estado { get; set; } = null!;

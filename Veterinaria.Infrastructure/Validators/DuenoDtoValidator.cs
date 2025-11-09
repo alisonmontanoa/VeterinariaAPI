@@ -12,10 +12,20 @@ namespace Veterinaria.Infrastructure.Validators
     {
         public DuenoDtoValidator()
         {
-            RuleFor(x => x.Nombre).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Telefono).NotEmpty().MaximumLength(20)
-                .Matches(@"^[0-9+\- ]+$").WithMessage("Sólo dígitos, +, -, espacio.");
-            RuleFor(x => x.Direccion).NotEmpty().MaximumLength(200);
+            RuleFor(x => x.Nombre)
+                .NotEmpty().WithMessage("El nombre del duenio es obligatorio.")
+                .MaximumLength(100);
+
+            RuleFor(x => x.Telefono)
+                .NotEmpty().WithMessage("El telefono es obligatorio.")
+                .MaximumLength(20)
+                .Matches(@"^[0-9+\- ]+$")
+                .WithMessage("Solo se permiten digitos, '+', '-', o espacios.");
+
+            RuleFor(x => x.Direccion)
+                .NotEmpty().WithMessage("La direccion es obligatoria.")
+                .MaximumLength(200);
         }
     }
+
 }

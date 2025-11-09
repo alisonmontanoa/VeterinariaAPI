@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "b6de3c31-1e9d-4a47-ad8f-ffe7d72487ea",
+		"name": "Caso 1 - Registrar Dueño y Mascota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Dueño y Mascota 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dueno\": {\r\n    \"nombre\": \"Carlos Rojas\",\r\n    \"direccion\": \"Av. America 456\",\r\n    \"telefono\": \"74500122\"\r\n  },\r\n  \"mascota\": {\r\n    \"nombre\": \"Nina\",\r\n    \"especie\": \"Perro\",\r\n    \"raza\": \"Beagle\",\r\n    \"edad\": 3\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Dueno/registrar-duenoConMascota",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Dueno",
+						"registrar-duenoConMascota"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dueño y Mascota 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dueno\": {\r\n    \"nombre\": \"Natalia Montaño\",\r\n    \"direccion\": \"Av. Victor Ustariz\",\r\n    \"telefono\": \"68231489\"\r\n  },\r\n  \"mascota\": {\r\n    \"nombre\": \"Charlie\",\r\n    \"especie\": \"Gato\",\r\n    \"raza\": \"angora\",\r\n    \"edad\": 4\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Dueno/registrar-duenoConMascota",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Dueno",
+						"registrar-duenoConMascota"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dueño y Mascota 3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dueno\": {\r\n    \"nombre\": \"Natalia Soria\",\r\n    \"direccion\": \"Av. Circunvalacion\",\r\n    \"telefono\": \"75123645\"\r\n  },\r\n  \"mascota\": {\r\n    \"nombre\": \"Nena\",\r\n    \"especie\": \"Perro\",\r\n    \"raza\": \"Chiwawa\",\r\n    \"edad\": 1\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Dueno/registrar-duenoConMascota",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Dueno",
+						"registrar-duenoConMascota"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

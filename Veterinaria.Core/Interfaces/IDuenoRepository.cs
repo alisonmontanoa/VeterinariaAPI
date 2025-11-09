@@ -7,12 +7,8 @@ using Veterinaria.Core.Entities;
 
 namespace Veterinaria.Core.Interfaces
 {
-    public interface IDuenoRepository
+    public interface IDuenoRepository : IBaseRepository<Dueno>
     {
-        Task<Dueno?> GetByIdAsync(int id);
         Task<Dueno?> GetByTelefonoAsync(string telefono);
-        Task AddAsync(Dueno entity);
-        Task SaveChangesAsync();
-
     }
 }

@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "f6ee1749-bd08-4663-bcfb-ca20934e6949",
+		"name": "Caso 2 — Registrar una nueva Mascota",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Cita 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mascotaId\": 1,\r\n  \"veterinarioId\": 1,\r\n  \"servicioId\": 1,\r\n  \"fecha\": \"2025-12-15T10:00:00\",\r\n  \"motivo\": \"Chequeo general de rutina\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/cita/agendar-cita",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"cita",
+						"agendar-cita"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cita 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mascotaId\": 2,\r\n  \"veterinarioId\": 2,\r\n  \"servicioId\": 2,\r\n  \"fecha\": \"2025-12-15T10:00:00\",\r\n  \"motivo\": \"Vacuna contra la rabia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/cita/agendar-cita",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"cita",
+						"agendar-cita"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

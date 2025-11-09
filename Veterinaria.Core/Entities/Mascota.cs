@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Veterinaria.Core.Entities
 {
-    public class Mascota
+    public class Mascota : BaseEntity
     {
-        public int Id { get; set; }
         public string Nombre { get; set; } = null!;
         public string Especie { get; set; } = null!;
         public string Raza { get; set; } = null!;

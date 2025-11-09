@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "ad282010-c9cd-4c05-a13c-89b4ed394918",
+		"name": "Caso 7 – Registrar Veterinario",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Veterinario 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Dr. Juan Perez\",\r\n  \"especialidad\": \"Medicina General\",\r\n  \"telefono\": \"76543210\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/veterinario/registrar-veterinario",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"veterinario",
+						"registrar-veterinario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Veterinario 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Dra. Ana Maria\",\r\n  \"especialidad\": \"Medicina General\",\r\n  \"telefono\": \"62598812\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/veterinario/registrar-veterinario",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"veterinario",
+						"registrar-veterinario"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -12,11 +12,22 @@ namespace Veterinaria.Infrastructure.Validators
     {
         public MascotaDtoValidator()
         {
-            RuleFor(x => x.Nombre).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Especie).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.Raza).NotEmpty().MaximumLength(50);
-            RuleFor(x => x.Edad).InclusiveBetween(0, 30);
-            RuleFor(x => x.DuenoId).GreaterThan(0);
+            RuleFor(x => x.Nombre)
+                .NotEmpty().WithMessage("El nombre de la mascota es obligatorio.")
+                .MaximumLength(100);
+
+            RuleFor(x => x.Especie)
+                .NotEmpty().WithMessage("Debe indicar la especie de la mascota.")
+                .MaximumLength(50);
+
+            RuleFor(x => x.Raza)
+                .NotEmpty().WithMessage("Debe indicar la raza de la mascota.")
+                .MaximumLength(50);
+
+            RuleFor(x => x.Edad)
+                .InclusiveBetween(0, 30)
+                .WithMessage("La edad debe estar entre 0 y 30 anios.");
         }
     }
+
 }

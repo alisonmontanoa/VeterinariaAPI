@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "6de51b73-dcb8-43c6-8f3d-1838f12529b1",
+		"name": "Caso 6 – Registrar Servicio Veterinario",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Servicio Veterinario 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Consulta General\",\r\n  \"descripcion\": \"Evaluacion medica general para mascotas.\",\r\n  \"precio\": 100\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/servicio/registrar-servicio",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"servicio",
+						"registrar-servicio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Servicio Veterinario 2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Vacuna Antirrabica\",\r\n  \"descripcion\": \"Vacunacion de mascota contra la rabia.\",\r\n  \"precio\": 20\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/servicio/registrar-servicio",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"servicio",
+						"registrar-servicio"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

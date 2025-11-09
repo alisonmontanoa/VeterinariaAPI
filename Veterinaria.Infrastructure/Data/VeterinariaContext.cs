@@ -20,7 +20,7 @@ namespace Veterinaria.Infrastructure.Data
         public DbSet<Veterinario> Veterinarios { get; set; } = null!;
         public DbSet<Servicio> Servicios { get; set; } = null!;
 
-        // ======= Configuración del modelo =======
+        // ======= Configuracion del modelo =======
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // -------------------------

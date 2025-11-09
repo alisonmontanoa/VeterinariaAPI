@@ -7,10 +7,9 @@ using Veterinaria.Core.Entities;
 
 namespace Veterinaria.Core.Interfaces
 {
-    public interface IMascotaRepository
+    public interface IMascotaRepository : IBaseRepository<Mascota>
     {
-        Task AddAsync(Mascota entity);
-        Task SaveChangesAsync();
-
+        Task<int> CountByDuenoIdAsync(int duenoId);
+        Task<IEnumerable<Mascota>> GetByDuenoIdAsync(int duenoId);
     }
 }
