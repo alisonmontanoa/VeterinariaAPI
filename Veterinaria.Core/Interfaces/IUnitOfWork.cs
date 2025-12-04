@@ -14,6 +14,7 @@ namespace Veterinaria.Core.Interfaces
         ICitaRepository Citas { get; }
         IServicioRepository Servicios { get; }
         IVeterinarioRepository Veterinarios { get; }
+        ISecurityRepository SecurityRepository { get; }
 
         IDapperContext Dapper { get; }
 

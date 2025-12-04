@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Veterinaria.Core.Entities;
+using Veterinaria.Core.Enums;
 
 namespace Veterinaria.Infrastructure.Data
 {
@@ -19,10 +20,13 @@ namespace Veterinaria.Infrastructure.Data
         public DbSet<Cita> Citas { get; set; } = null!;
         public DbSet<Veterinario> Veterinarios { get; set; } = null!;
         public DbSet<Servicio> Servicios { get; set; } = null!;
+        public DbSet<Security> Security { get; set; } = null!;
 
         // ======= Configuracion del modelo =======
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // -------------------------
             // ENTIDAD: DUENO
             // -------------------------
@@ -144,6 +148,40 @@ namespace Veterinaria.Infrastructure.Data
                       .WithMany(s => s.Citas)
                       .HasForeignKey(p => p.ServicioId)
                       .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // -------------------------
+            // ENTIDAD: SECURITY
+            // -------------------------
+            modelBuilder.Entity<Security>(entity =>
+            {
+                entity.ToTable("Security");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Login)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Role)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasConversion(
+                        x => x.ToString(),
+                        x => (RoleType)Enum.Parse(typeof(RoleType), x)
+                    );
             });
         }
     }

@@ -52,7 +52,7 @@ namespace Veterinaria.Infrastructure.Repositories
         }
 
         // -------------------
-        // Métodos asincronos
+        // Metodos asincronos
         // -------------------
         public async Task<IEnumerable<T>> GetAllAsync()
         {

@@ -20,6 +20,7 @@ namespace Veterinaria.Infrastructure.Repositories
         private ICitaRepository? _citas;
         private IServicioRepository? _servicios;
         private IVeterinarioRepository? _veterinarios;
+        private ISecurityRepository _securityRepository;
 
         public UnitOfWork(VeterinariaContext context, IDapperContext dapper)
         {
@@ -36,6 +37,7 @@ namespace Veterinaria.Infrastructure.Repositories
         public ICitaRepository Citas => _citas ??= new CitaRepository(_context, _dapper);
         public IServicioRepository Servicios => _servicios ??= new ServicioRepository(_context, _dapper);
         public IVeterinarioRepository Veterinarios => _veterinarios ??= new VeterinarioRepository(_context, _dapper);
+        public ISecurityRepository SecurityRepository => _securityRepository ?? new SecurityRepository(_context);
 
         public void SaveChanges() => _context.SaveChanges();
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

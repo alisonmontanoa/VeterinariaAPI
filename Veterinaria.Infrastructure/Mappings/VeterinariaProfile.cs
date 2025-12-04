@@ -18,6 +18,7 @@ namespace Veterinaria.Infrastructure.Mappings
             CreateMap<Cita, CitaDto>().ReverseMap();
             CreateMap<Veterinario, VeterinarioDto>().ReverseMap();
             CreateMap<Servicio, ServicioDto>().ReverseMap();
+            CreateMap<Security, SecurityDto>().ReverseMap();
         }
     }
 }

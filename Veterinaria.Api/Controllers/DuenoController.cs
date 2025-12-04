@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -15,6 +16,19 @@ using Veterinaria.Infrastructure.Validators;
 
 namespace Veterinaria.Api.Controllers.v1
 {
+    /// <summary>
+    /// Controlador encargado de gestionar las operaciones relacionadas con los dueños
+    /// dentro del sistema veterinario.
+    /// </summary>
+    /// <remarks>
+    /// Este controlador permite registrar dueños junto a sus mascotas, así como realizar
+    /// busquedas filtradas utilizando Entity Framework o consultas Dapper para obtener 
+    /// un rendimiento superior.  
+    /// 
+    /// Todos los metodos de este controlador requieren autenticación mediante JWT
+    /// y estan protegidos con el atributo <see cref="Authorize"/>.
+    /// </remarks>
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
@@ -33,16 +47,43 @@ namespace Veterinaria.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Registra un dueño junto con su mascota.
+        /// Registra un nuevo dueño junto con una mascota asociada.
         /// </summary>
         /// <remarks>
-        /// Este endpoint valida los datos del dueño y la mascota, aplica reglas de negocio
-        /// y devuelve los IDs generados tras el registro exitoso.
+        /// Este endpoint forma parte del **Caso de Uso 1**.  
+        /// 
+        /// Reglas aplicadas:
+        /// - El telefono del dueño debe ser unico en la base de datos.  
+        /// - Todos los campos del dueño y la mascota son obligatorios.  
+        /// - Se valida la estructura del request mediante validadores personalizados.  
+        /// - No se permite registrar una mascota sin un dueño valido.  
+        ///
+        /// Flujo del proceso:
+        /// 1. Se validan los datos del dueño y la mascota.  
+        /// 2. Si la validacion falla, se devuelven todos los errores detectados.  
+        /// 3. Si es correcto, se registra el dueño y luego su mascota asociada.  
+        /// 4. Se retorna el estado **201 Created** con los IDs generados.
+        ///
+        /// Ejemplo de Request:
+        /// 
+        ///     {
+        ///         "dueno": {
+        ///             "nombre": "Carlos Gomez",
+        ///             "telefono": "77712345",
+        ///             "direccion": "Zona Norte"
+        ///         },
+        ///         "mascota": {
+        ///             "nombre": "Firulais",
+        ///             "especie": "Perro",
+        ///             "raza": "Pastor Aleman",
+        ///             "edad": 3
+        ///         }
+        ///     }
         /// </remarks>
-        /// <param name="request">Objeto que contiene la información del dueño y la mascota.</param>
-        /// <returns>Retorna los IDs del dueño y la mascota recién registrados.</returns>
+        /// <param name="request">Objeto que contiene los datos del dueño y su mascota asociada.</param>
+        /// <returns>Un objeto con los IDs generados y un mensaje de confirmación.</returns>
         /// <response code="201">Registro exitoso.</response>
-        /// <response code="400">Error de validación o datos inválidos.</response>
+        /// <response code="400">Datos inválidos o errores de validación.</response>
         /// <response code="500">Error interno del servidor.</response>
         [HttpPost("registrar-duenoConMascota")]
         [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(ApiResponse<object>))]
@@ -71,15 +112,25 @@ namespace Veterinaria.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Filtra los dueños registrados según parámetros opcionales.
+        /// Obtiene una lista de dueños filtrada segun parametros opcionales.
         /// </summary>
         /// <remarks>
-        /// Se puede filtrar por nombre, dirección o teléfono.  
-        /// Este método devuelve una lista de dueños ordenada por ID descendente.
+        /// Este metodo permite filtrar por:
+        /// - Nombre  
+        /// - Direccion  
+        /// - Telefono  
+        ///
+        /// La busqueda se realiza mediante Entity Framework Core y retorna los resultados
+        /// ordenados por ID de manera descendente.
+        ///
+        /// Ejemplo de uso:
+        ///
+        ///     GET /api/v1/Dueno/filtrar-duenos?nombre=Carlos
+        ///
         /// </remarks>
-        /// <param name="filters">Filtros de búsqueda aplicables.</param>
-        /// <returns>Lista de dueños filtrada según los criterios ingresados.</returns>
-        /// <response code="200">Retorna la lista de dueños.</response>
+        /// <param name="filters">Parametros opcionales para el filtrado.</param>
+        /// <returns>Lista filtrada de dueños.</returns>
+        /// <response code="200">Lista obtenida exitosamente.</response>
         /// <response code="500">Error interno del servidor.</response>
         [HttpGet("filtrar-duenos")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<Dueno>>))]
@@ -92,13 +143,24 @@ namespace Veterinaria.Api.Controllers.v1
         }
 
         /// <summary>
-        /// Filtra los dueños usando consultas Dapper.
+        /// Filtra los dueños utilizando consultas SQL optimizadas mediante Dapper.
         /// </summary>
         /// <remarks>
-        /// Permite búsqueda más rápida directamente por SQL nativo (solo lectura).
+        /// Este metodo ofrece una alternativa más rapida frente a Entity Framework
+        /// cuando se requieren grandes volumenes de datos y operaciones solo de lectura.
+        ///
+        /// Soporta filtrado por:
+        /// - Nombre  
+        /// - Direccion  
+        /// - Telefono  
+        ///
+        /// Ejemplo de llamada:
+        ///
+        ///     GET /api/v1/Dueno/dapper/filtrar-duenos?telefono=77712345
+        ///
         /// </remarks>
-        /// <param name="filters">Filtros por nombre, dirección o teléfono.</param>
-        /// <returns>Lista de dueños filtrada por Dapper.</returns>
+        /// <param name="filters">Filtros aplicados al query.</param>
+        /// <returns>Lista filtrada de dueños.</returns>
         [HttpGet("dapper/filtrar-duenos")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<Dueno>>))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
