@@ -15,5 +15,6 @@ namespace Veterinaria.Core.Interfaces
         Task<int> RegistrarMascotaAsync(MascotaDto mascotaDto);
         Task<PagedList<MascotaDto>> ObtenerMascotasAsync(MascotaQueryFilter filters);
         Task<PagedList<MascotaConDuenoDto>>ListarMascotasConDuenoAsync(MascotaConDuenoQueryFilter filters);
+        Task<IEnumerable<MascotasPorRazaServiciosDto>> ObtenerServiciosPorRazaAsync();
     }
 }

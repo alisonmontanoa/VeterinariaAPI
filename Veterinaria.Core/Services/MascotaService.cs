@@ -149,5 +149,27 @@ namespace Veterinaria.Core.Services
                 filters.PageSize
             );
         }
+
+        public async Task<IEnumerable<MascotasPorRazaServiciosDto>> ObtenerServiciosPorRazaAsync()
+        {
+            var mascotas = await _unitOfWork.Mascotas.GetAllAsync();
+            var citas = await _unitOfWork.Citas.GetAllAsync();
+
+            var resultado = mascotas
+                .Join(
+                    citas,
+                    m => m.Id,
+                    c => c.MascotaId,
+                    (m, c) => new { m.Raza }
+                )
+                .GroupBy(x => x.Raza)
+                .Select(g => new MascotasPorRazaServiciosDto
+                {
+                    Raza = g.Key,
+                    CantidadServicios = g.Count()
+                });
+
+            return resultado;
+        }
     }
 }

@@ -24,10 +24,10 @@ namespace Veterinaria.Api.Controllers
     /// o consultas optimizadas con Dapper.
     /// 
     /// Acceso permitido para:
-    /// - Cliente
+    /// - Administrador
     /// - Recepcionista
     /// </remarks>
-    [Authorize(Roles = $"{nameof(RoleType.Cliente)},{nameof(RoleType.Recepcionista)}")]
+    [Authorize(Roles = $"{nameof(RoleType.Administrador)},{nameof(RoleType.Recepcionista)}")]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
@@ -160,5 +160,27 @@ namespace Veterinaria.Api.Controllers
                 }
             });
         }
+
+        /// <summary>
+        /// Lista las razas de mascotas junto con la cantidad total de servicios realizados.
+        /// </summary>
+        /// <remarks>
+        /// Muestra cuantos servicios se realizaron para cada raza de mascota,
+        /// sin importar el tipo de servicio.
+        /// </remarks>
+        /// <response code="200">Listado generado correctamente</response>
+        [HttpGet("servicios-por-raza")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [SwaggerOperation(
+            Summary = "Servicios por raza",
+            Description = "Obtiene la cantidad total de servicios realizados por raza de mascota."
+        )]
+        public async Task<IActionResult> ObtenerServiciosPorRaza()
+        {
+            var resultado = await _mascotaService.ObtenerServiciosPorRazaAsync();
+
+            return Ok(new ApiResponse<IEnumerable<MascotasPorRazaServiciosDto>>(resultado));
+        }
+
     }
 }
