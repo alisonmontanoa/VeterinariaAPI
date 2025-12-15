@@ -7,30 +7,31 @@ using System.Threading.Tasks;
 namespace Veterinaria.Core.QueryFilters
 {
     /// <summary>
-    /// Filtros de busqueda para servicios.
+    /// Filtros de basqueda para mascotas con sus dueños.
     /// </summary>
     /// <remarks>
-    /// Permite aplicar filtros opcionales para consultar servicios
+    /// Permite aplicar filtros opcionales para consultar mascotas con dueños
     /// junto con parametros de paginacion.
     /// 
     /// Los filtros pueden combinarse entre si.
     /// </remarks>
-    public class ServicioQueryFilter : PaginationQueryFilter
+    public class MascotaConDuenoQueryFilter : PaginationQueryFilter
     {
-        /// Nombre del servicio.
+        /// Nombre de la mascota.
         /// </summary>
         /// <remarks>
         /// Permite realizar busquedas parciales por nombre.
         /// </remarks>
-        /// <example>Vacunacion</example>
-        public string? Nombre { get; set; }
+        /// <example>Luna</example>
+        public string? NombreMascota { get; set; }
 
-        /// Descripcion del servicio.
+        /// <summary>
+        /// Especie de la mascota.
         /// </summary>
         /// <remarks>
-        /// Permite realizar busquedas parciales por descripcion.
+        /// Ejemplos comunes: Perro, Gato.
         /// </remarks>
-        /// <example>Vacunacion contra la rabia</example>
-        public string? Descripcion { get; set; }
+        /// <example>Gato</example>
+        public string? Especie { get; set; }
     }
 }

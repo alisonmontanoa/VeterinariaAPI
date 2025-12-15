@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "92b795d9-dc5e-458d-afc5-42b8f49f63d9",
+		"name": "Caso 4: Actualizar estado de cita",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Cambiar estado",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"citaId\": 5,\r\n  \"nuevoEstado\": \"Atendida\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Cita/actualizar-estado",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Cita",
+						"actualizar-estado"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

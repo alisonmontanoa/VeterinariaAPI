@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using Veterinaria.Api.Responses;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Enums;
@@ -17,18 +19,16 @@ using Veterinaria.Infrastructure.Validators;
 namespace Veterinaria.Api.Controllers.v1
 {
     /// <summary>
-    /// Controlador encargado de gestionar las operaciones relacionadas con los dueños
-    /// dentro del sistema veterinario.
+    /// Controlador para la gestion de dueños.
     /// </summary>
     /// <remarks>
-    /// Este controlador permite registrar dueños junto a sus mascotas, así como realizar
-    /// busquedas filtradas utilizando Entity Framework o consultas Dapper para obtener 
-    /// un rendimiento superior.  
+    /// Permite registrar dueños con sus mascotas y consultar listados paginados.
     /// 
-    /// Todos los metodos de este controlador requieren autenticación mediante JWT
-    /// y estan protegidos con el atributo <see cref="Authorize"/>.
+    /// Acceso permitido para:
+    /// - Administrador
+    /// - Recepcionista
     /// </remarks>
-    [Authorize]
+    [Authorize(Roles = $"{nameof(RoleType.Administrador)},{nameof(RoleType.Recepcionista)}")]
     [ApiController]
     [ApiVersion("1.0")]
     [Produces("application/json")]
@@ -38,150 +38,146 @@ namespace Veterinaria.Api.Controllers.v1
         private readonly IDuenoService _duenoService;
         private readonly IValidationService _validationService;
         private readonly IDapperContext _dapper;
+        private readonly IMapper _mapper;
 
-        public DuenoController(IDuenoService duenoService, IValidationService validationService, IDapperContext dapper)
+        public DuenoController(IDuenoService duenoService, IValidationService validationService, IDapperContext dapper, IMapper mapper)
         {
             _duenoService = duenoService;
             _validationService = validationService;
             _dapper = dapper;
+            _mapper = mapper;
         }
 
         /// <summary>
-        /// Registra un nuevo dueño junto con una mascota asociada.
+        /// Registra un nuevo dueño junto con una mascota asociada
         /// </summary>
         /// <remarks>
-        /// Este endpoint forma parte del **Caso de Uso 1**.  
+        /// Caso de Uso 1.
+        /// Registra un dueño y su mascota aplicando todas las validaciones de negocio.
         /// 
-        /// Reglas aplicadas:
-        /// - El telefono del dueño debe ser unico en la base de datos.  
-        /// - Todos los campos del dueño y la mascota son obligatorios.  
-        /// - Se valida la estructura del request mediante validadores personalizados.  
-        /// - No se permite registrar una mascota sin un dueño valido.  
-        ///
-        /// Flujo del proceso:
-        /// 1. Se validan los datos del dueño y la mascota.  
-        /// 2. Si la validacion falla, se devuelven todos los errores detectados.  
-        /// 3. Si es correcto, se registra el dueño y luego su mascota asociada.  
-        /// 4. Se retorna el estado **201 Created** con los IDs generados.
-        ///
-        /// Ejemplo de Request:
-        /// 
-        ///     {
-        ///         "dueno": {
-        ///             "nombre": "Carlos Gomez",
-        ///             "telefono": "77712345",
-        ///             "direccion": "Zona Norte"
-        ///         },
-        ///         "mascota": {
-        ///             "nombre": "Firulais",
-        ///             "especie": "Perro",
-        ///             "raza": "Pastor Aleman",
-        ///             "edad": 3
-        ///         }
-        ///     }
+        /// Reglas:
+        /// - Telefono único
+        /// - Campos obligatorios
+        /// - Maximo de mascotas por dueño
         /// </remarks>
-        /// <param name="request">Objeto que contiene los datos del dueño y su mascota asociada.</param>
-        /// <returns>Un objeto con los IDs generados y un mensaje de confirmación.</returns>
-        /// <response code="201">Registro exitoso.</response>
-        /// <response code="400">Datos inválidos o errores de validación.</response>
-        /// <response code="500">Error interno del servidor.</response>
+        /// <param name="request">Datos del dueño y su mascota.</param>
+        /// <returns>IDs generados del dueño y la mascota.</returns>
+        /// <response code="201">Registro exitoso</response>
+        /// <response code="400">Errores de validación</response>
+        /// <response code="500">Error interno del servidor</response>
         [HttpPost("registrar-duenoConMascota")]
-        [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(ApiResponse<object>))]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [SwaggerOperation(Summary = "Registrar un duenio con su mascota", Description = "Registra un nuevo duenio junto con su mascota en el sistema.")]
-        public async Task<IActionResult> Registrar([FromBody] RegistrarDuenoMascotaRequest request)
+        [SwaggerOperation(
+            Summary = "Registrar dueño con mascota",
+            Description = "Registra un dueño junto con una mascota asociada."
+        )]
+        public async Task<IActionResult> Registrar(
+            [FromBody] RegistrarDuenoMascotaRequest request)
         {
             var duenoValidation = await _validationService.ValidateAsync(request.Dueno);
             var mascotaValidation = await _validationService.ValidateAsync(request.Mascota);
 
             if (!duenoValidation.IsValid || !mascotaValidation.IsValid)
             {
-                var errores = duenoValidation.Errors.Concat(mascotaValidation.Errors);
-                return BadRequest(new { Errors = errores });
+                var errores = duenoValidation.Errors
+                    .Concat(mascotaValidation.Errors)
+                    .ToList();
+
+                return BadRequest(new ApiResponse<object>(null)
+                {
+                    Messages = errores
+                });
             }
 
-            (int duenoId, int mascotaId) = await _duenoService.RegistrarDuenoConMascotaAsync(request.Dueno, request.Mascota);
+            var (duenoId, mascotaId) =
+                await _duenoService.RegistrarDuenoConMascotaAsync(
+                    request.Dueno,
+                    request.Mascota);
 
             return StatusCode(201, new ApiResponse<object>(new
             {
                 DuenoId = duenoId,
-                MascotaId = mascotaId,
-                Mensaje = "Registro exitoso"
+                MascotaId = mascotaId
             }));
         }
 
         /// <summary>
-        /// Obtiene una lista de dueños filtrada segun parametros opcionales.
+        /// Obtiene un listado paginado de dueños
         /// </summary>
         /// <remarks>
-        /// Este metodo permite filtrar por:
-        /// - Nombre  
-        /// - Direccion  
-        /// - Telefono  
-        ///
-        /// La busqueda se realiza mediante Entity Framework Core y retorna los resultados
-        /// ordenados por ID de manera descendente.
-        ///
-        /// Ejemplo de uso:
-        ///
-        ///     GET /api/v1/Dueno/filtrar-duenos?nombre=Carlos
-        ///
+        /// Permite filtrar por nombre, direccion y teléfono.
+        /// 
+        /// Retorna resultados paginados.
         /// </remarks>
-        /// <param name="filters">Parametros opcionales para el filtrado.</param>
-        /// <returns>Lista filtrada de dueños.</returns>
-        /// <response code="200">Lista obtenida exitosamente.</response>
-        /// <response code="500">Error interno del servidor.</response>
+        /// <param name="filters">Parametros de filtrado y paginacion.</param>
+        /// <returns>Listado paginado de dueños.</returns>
+        /// <response code="200">Listado obtenido correctamente</response>
+        /// <response code="500">Error interno del servidor</response>
         [HttpGet("filtrar-duenos")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<Dueno>>))]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [SwaggerOperation(Summary = "Filtrar duenios", Description = "Obtiene una lista filtrada de duenios mediante Entity Framework.")]
-        public async Task<IActionResult> FiltrarDuenos([FromQuery] DuenoQueryFilter filters)
+        [ProducesResponseType((int)HttpStatusCode.OK,
+            Type = typeof(ApiResponse<IEnumerable<DuenoDto>>))]
+        [SwaggerOperation(
+            Summary = "Filtrar dueños",
+            Description = "Obtiene un listado paginado de dueños usando Entity Framework."
+        )]
+        public async Task<IActionResult> FiltrarDuenos(
+            [FromQuery] DuenoQueryFilter filters)
         {
-            var result = await _duenoService.ObtenerDuenosAsync(filters);
-            return Ok(new ApiResponse<IEnumerable<Dueno>>(result));
+            var pagedResult = await _duenoService.ObtenerDuenosAsync(filters);
+
+            var dueniosDto = _mapper.Map<IEnumerable<DuenoDto>>(pagedResult);
+
+            return Ok(new ApiResponse<IEnumerable<DuenoDto>>(dueniosDto)
+            {
+                Pagination = new Pagination
+                {
+                    TotalCount = pagedResult.TotalCount,
+                    PageSize = pagedResult.PageSize,
+                    CurrentPage = pagedResult.CurrentPage,
+                    TotalPages = pagedResult.TotalPages,
+                    HasNextPage = pagedResult.HasNextPage,
+                    HasPreviousPage = pagedResult.HasPreviousPage
+                }
+            });
         }
 
         /// <summary>
-        /// Filtra los dueños utilizando consultas SQL optimizadas mediante Dapper.
+        /// Obtiene un listado de dueños utilizando Dapper.
         /// </summary>
         /// <remarks>
-        /// Este metodo ofrece una alternativa más rapida frente a Entity Framework
-        /// cuando se requieren grandes volumenes de datos y operaciones solo de lectura.
-        ///
-        /// Soporta filtrado por:
-        /// - Nombre  
-        /// - Direccion  
-        /// - Telefono  
-        ///
-        /// Ejemplo de llamada:
-        ///
-        ///     GET /api/v1/Dueno/dapper/filtrar-duenos?telefono=77712345
-        ///
+        /// Consulta optimizada solo para lectura.
+        /// No aplica paginacion.
         /// </remarks>
-        /// <param name="filters">Filtros aplicados al query.</param>
-        /// <returns>Lista filtrada de dueños.</returns>
+        /// <param name="filters">Parametros de filtrado.</param>
+        /// <returns>Listado de dueños.</returns>
+        /// <response code="200">Listado obtenido correctamente</response>
+        /// <response code="500">Error interno del servidor</response>
         [HttpGet("dapper/filtrar-duenos")]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<Dueno>>))]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [SwaggerOperation(Summary = "Filtrar duenios (Dapper)", Description = "Obtiene una lista de duenios mediante Dapper SQL.")]
-        public async Task<IActionResult> FiltrarDuenosDapper([FromQuery] DuenoQueryFilter filters)
+        [ProducesResponseType((int)HttpStatusCode.OK,
+            Type = typeof(ApiResponse<IEnumerable<DuenoDto>>))]
+        [SwaggerOperation(
+            Summary = "Filtrar dueños (Dapper)",
+            Description = "Obtiene un listado de dueños usando consultas SQL con Dapper."
+        )]
+        public async Task<IActionResult> FiltrarDuenosDapper(
+            [FromQuery] DuenoQueryFilter filters)
         {
             var sql = _dapper.Provider switch
             {
                 DatabaseProvider.SqlServer => DuenoQueries.DuenoQuerySqlServer,
                 DatabaseProvider.MySql => DuenoQueries.DuenoQueryMySQL,
-                _ => throw new NotSupportedException("Proveedor no soportado.")
+                _ => throw new NotSupportedException("Proveedor no soportado")
             };
 
-            var result = await _dapper.QueryAsync<Dueno>(sql, new
+            var resultado = await _dapper.QueryAsync<DuenoDto>(sql, new
             {
                 filters.Nombre,
                 filters.Direccion,
                 filters.Telefono
             });
 
-            return Ok(new ApiResponse<IEnumerable<Dueno>>(result));
+            return Ok(new ApiResponse<IEnumerable<DuenoDto>>(resultado));
         }
     }
 }

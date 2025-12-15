@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Enums;
@@ -16,10 +17,14 @@ namespace Veterinaria.Core.Services
     public class ServicioService : IServicioService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly IDapperContext _dapper;
 
-        public ServicioService(IUnitOfWork unitOfWork)
+        public ServicioService(IUnitOfWork unitOfWork, IMapper mapper, IDapperContext dapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _dapper = dapper;
         }
 
         public async Task<int> CrearServicioAsync(ServicioDto servicioDto)
@@ -55,7 +60,7 @@ namespace Veterinaria.Core.Services
             return servicio.Id;
         }
 
-        public async Task<IEnumerable<Servicio>> ObtenerServiciosAsync(ServicioQueryFilter filters)
+        public async Task<PagedList<ServicioDto>> ObtenerServiciosAsync(ServicioQueryFilter filters)
         {
             var servicios = await _unitOfWork.Servicios.GetAllAsync();
 
@@ -64,8 +69,14 @@ namespace Veterinaria.Core.Services
 
             if (!string.IsNullOrWhiteSpace(filters.Descripcion))
                 servicios = servicios.Where(s => s.Descripcion.Contains(filters.Descripcion, StringComparison.OrdinalIgnoreCase));
+            
+            var serviciosDto = _mapper.Map<IEnumerable<ServicioDto>>(servicios);
 
-            return servicios.OrderByDescending(s => s.Id);
+            return PagedList<ServicioDto>.Create(
+                serviciosDto.OrderByDescending(s => s.Id),
+                filters.PageNumber,
+                filters.PageSize
+            );
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Exceptions;
@@ -117,7 +118,8 @@ namespace Veterinaria.Core.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Cita>> ObtenerCitasAsync(CitaQueryFilter filters)
+        // Obtener Citas
+        public async Task<PagedList<CitaDto>> ObtenerCitasAsync(CitaQueryFilter filters)
         {
             var citas = await _unitOfWork.Citas.GetAllAsync();
 
@@ -133,7 +135,70 @@ namespace Veterinaria.Core.Services
             if (!string.IsNullOrWhiteSpace(filters.Estado))
                 citas = citas.Where(c => c.Estado.Equals(filters.Estado, StringComparison.OrdinalIgnoreCase));
 
-            return citas;
+            var citasDto = _mapper.Map<IEnumerable<CitaDto>>(citas);
+
+            return PagedList<CitaDto>.Create(
+                citasDto,
+                filters.PageNumber,
+                filters.PageSize
+            );
+        }
+
+        // Actualizar estado de Cita
+        public async Task ActualizarEstadoCitaAsync(ActualizarEstadoCitaDto dto)
+        {
+            // 1. Verificar existencia de la cita
+            var cita = await _unitOfWork.Citas.GetByIdAsync(dto.CitaId);
+            if (cita == null)
+                throw new BusinessException("La cita no existe.", 404);
+
+            // 2. Solo se permite cambiar si esta Pendiente
+            if (!cita.Estado.Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
+                throw new BusinessException(
+                    "Solo se pueden actualizar citas con estado Pendiente.", 400);
+
+            // 3. Actualizar estado
+            cita.Estado = dto.Estado;
+
+            _unitOfWork.Citas.Update(cita);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        // Obtener Reportes de Citas Pendientes
+        private async Task<IEnumerable<Cita>> ObtenerCitasPendientesBaseAsync()
+        {
+            var citas = await _unitOfWork.Citas.GetAllAsync();
+
+            return citas
+                .Where(c => c.Estado == "Pendiente")
+                .OrderBy(c => c.Fecha);
+        }
+
+        public async Task<PagedList<ReporteCitaPendienteDto>>ObtenerReporteCitasPendientesAsync(PaginationQueryFilter filters)
+        {
+            var citasPendientes = await ObtenerCitasPendientesBaseAsync();
+
+            var reporte = citasPendientes.Select(c => new ReporteCitaPendienteDto
+            {
+                CitaId = c.Id,
+                Fecha = c.Fecha,
+                Motivo = c.Motivo,
+
+                NombreMascota = c.Mascota.Nombre,
+                Especie = c.Mascota.Especie,
+
+                NombreDueno = c.Mascota.Dueno.Nombre,
+                TelefonoDueno = c.Mascota.Dueno.Telefono,
+
+                NombreVeterinario = c.Veterinario.Nombre,
+                Especialidad = c.Veterinario.Especialidad
+            });
+
+            return PagedList<ReporteCitaPendienteDto>.Create(
+                reporte,
+                filters.PageNumber,
+                filters.PageSize
+            );
         }
     }
 }

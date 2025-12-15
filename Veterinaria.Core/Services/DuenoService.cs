@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Exceptions;
@@ -38,7 +39,7 @@ namespace Veterinaria.Core.Services
 
         public async Task<(int duenoId, int mascotaId)> RegistrarDuenoConMascotaAsync(DuenoDto duenoDto, MascotaDto mascotaDto)
         {
-            // === VALIDACIONES DEL DUEÑO ===
+            // === VALIDACIONES DEL DUENO ===
             if (ContainsForbiddenContent(duenoDto.Nombre))
                 throw new BusinessException("El nombre del duenio contiene lenguaje inapropiado.", 400);
 
@@ -90,7 +91,7 @@ namespace Veterinaria.Core.Services
             return (dueno.Id, mascota.Id);
         }
 
-        public async Task<IEnumerable<Dueno>> ObtenerDuenosAsync(DuenoQueryFilter filters)
+        public async Task<PagedList<DuenoDto>> ObtenerDuenosAsync(DuenoQueryFilter filters)
         {
             var duenios = await _unitOfWork.Duenos.GetAllAsync();
 
@@ -103,7 +104,13 @@ namespace Veterinaria.Core.Services
             if (!string.IsNullOrWhiteSpace(filters.Telefono))
                 duenios = duenios.Where(d => d.Telefono.Contains(filters.Telefono));
 
-            return duenios.OrderByDescending(d => d.Id);
+            var dueniosDto = _mapper.Map<IEnumerable<DuenoDto>>(duenios);
+
+            return PagedList<DuenoDto>.Create(
+                dueniosDto.OrderByDescending(d => d.Id),
+                filters.PageNumber,
+                filters.PageSize
+            );
         }
     }
 }

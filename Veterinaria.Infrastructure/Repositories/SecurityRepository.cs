@@ -19,7 +19,9 @@ namespace Veterinaria.Infrastructure.Repositories
 
         public async Task<Security?> GetLoginByCredentials(UserLogin login)
         {
-            return await _entities.FirstOrDefaultAsync(x => x.Login == login.User);
+            return await _entities
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Login == login.Login);
         }
     }
 }

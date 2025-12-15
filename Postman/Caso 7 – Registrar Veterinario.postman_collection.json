@@ -9,6 +9,16 @@
 		{
 			"name": "Veterinario 1",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgyMjUwMCwiZXhwIjoxNzY1ODIzNDAwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.NoskjpH6JJ0AxpNdkAmVg8eyqnDXdX3tl_fpY30lyvo",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -21,7 +31,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7220/api/veterinario/registrar-veterinario",
+					"raw": "https://localhost:7220/api/v1/Veterinario/registrar-veterinario",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -29,7 +39,8 @@
 					"port": "7220",
 					"path": [
 						"api",
-						"veterinario",
+						"v1",
+						"Veterinario",
 						"registrar-veterinario"
 					]
 				}
@@ -51,7 +62,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7220/api/veterinario/registrar-veterinario",
+					"raw": "https://localhost:7220/api/v1/Veterinario/registrar-veterinario",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -59,7 +70,8 @@
 					"port": "7220",
 					"path": [
 						"api",
-						"veterinario",
+						"v1",
+						"Veterinario",
 						"registrar-veterinario"
 					]
 				}

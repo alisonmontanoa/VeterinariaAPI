@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "f6ee1749-bd08-4663-bcfb-ca20934e6949",
+		"name": "Caso 2 — Registrar una Cita",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Cita 1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgxOTI3MCwiZXhwIjoxNzY1ODIwMTcwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.zJS0gojSLwgvxl0EXpq-O-rEt7vkAHdzxNjcMiWrwKQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mascotaId\": 1,\r\n  \"veterinarioId\": 1,\r\n  \"servicioId\": 1,\r\n  \"fecha\": \"2025-12-20T10:00:00\",\r\n  \"motivo\": \"Chequeo general de rutina\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Cita/agendar-cita",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Cita",
+						"agendar-cita"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cita 2",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgxOTI3MCwiZXhwIjoxNzY1ODIwMTcwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.zJS0gojSLwgvxl0EXpq-O-rEt7vkAHdzxNjcMiWrwKQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"mascotaId\": 2,\r\n  \"veterinarioId\": 2,\r\n  \"servicioId\": 2,\r\n  \"fecha\": \"2025-12-20T10:00:00\",\r\n  \"motivo\": \"Vacuna contra la rabia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Cita/agendar-cita",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Cita",
+						"agendar-cita"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

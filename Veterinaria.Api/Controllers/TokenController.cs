@@ -1,74 +1,107 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Veterinaria.Core.Entities;
+using Veterinaria.Core.Enums;
 using Veterinaria.Core.Interfaces;
 using Veterinaria.Core.Services;
 
 namespace Veterinaria.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [Produces("application/json")]
+    /// <summary>
+    /// Controlador responsable de la autenticacion y generacion de tokens JWT.
+    /// </summary>
+    /// <remarks>
+    /// Este controlador permite a los usuarios autenticarse y obtener un token JWT
+    /// que sera utilizado para acceder a los endpoints protegidos de la API.
+    /// 
+    /// El token incluye informacion del usuario y su rol.
+    /// </remarks>
     [ApiController]
+    [ApiVersion("1.0")]
+    [Produces("application/json")]
+    [Route("api/[controller]")]
     public class TokenController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly ISecurityService _securityService;
-        private readonly IPasswordService _passwordService;
 
-        public TokenController(IConfiguration configuration,
-                       ISecurityService securityService,
-                       IPasswordService passwordService)
+        public TokenController(
+            IConfiguration configuration,
+            ISecurityService securityService)
         {
             _configuration = configuration;
             _securityService = securityService;
-            _passwordService = passwordService;
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Autentica un usuario y genera un token JWT.
+        /// </summary>
+        /// <remarks>
+        /// Este endpoint valida las credenciales del usuario y, si son correctas,
+        /// devuelve un token JWT valido por un tiempo determinado.
+        /// 
+        /// El token incluye:
+        /// - Login
+        /// - Nombre
+        /// - Rol del usuario
+        /// 
+        /// El token debe enviarse en el header:
+        /// Authorization: Bearer {token}
+        /// </remarks>
+        /// <param name="userLogin">Credenciales del usuario.</param>
+        /// <returns>Token JWT generado.</returns>
+        /// <response code="200">Autenticacion exitosa.</response>
+        /// <response code="404">Credenciales incorrectas.</response>
+        /// <response code="500">Error interno del servidor.</response>
+        [AllowAnonymous]
+        [HttpPost("login")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Login de usuario",
+            Description = "Autentica un usuario y devuelve un token JWT."
+        )]
         public async Task<IActionResult> Authentication(UserLogin userLogin)
         {
-            // Validar usuario en BD
-            var validation = await IsValidUser(userLogin);
-            if (validation.Item1)
-            {
-                var token = GenerateToken(validation.Item2);
-                return Ok(new { token });
-            }
+            var user = await _securityService.GetLoginByCredentials(userLogin);
 
-            return NotFound("Credenciales incorrectas");
+            if (user == null)
+                return NotFound("Credenciales incorrectas");
+
+            var token = GenerateToken(user);
+            return Ok(new { token });
         }
 
-        private async Task<(bool, Security)> IsValidUser(UserLogin login)
-        {
-            var user = await _securityService.GetLoginByCredentials(login);
-            if (user == null) return (false, null);
-
-            var isValid = _passwordService.Check(user.Password, login.Password);
-            return (isValid, user);
-        }
-
+        /// <summary>
+        /// Genera el token JWT a partir de los datos del usuario.
+        /// </summary>
         private string GenerateToken(Security security)
         {
-            var symmetricSecurityKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
-            var signingCredentials =
-                new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"])
+            );
 
-            var header = new JwtHeader(signingCredentials);
+            var credentials = new SigningCredentials(
+                key, SecurityAlgorithms.HmacSha256
+            );
 
-            // CLAIMS
+            var header = new JwtHeader(credentials);
+
             var claims = new[]
             {
-                new Claim("Login", security.Login),
-                new Claim("Name", security.Name),
-                new Claim(ClaimTypes.Role, security.Role.ToString()),  // importante
-            };
+            new Claim("Login", security.Login),
+            new Claim("Name", security.Name),
+            new Claim(ClaimTypes.Role, security.Role.ToString())
+        };
 
-            // PAYLOAD
             var payload = new JwtPayload(
                 issuer: _configuration["Authentication:Issuer"],
                 audience: _configuration["Authentication:Audience"],
@@ -78,56 +111,7 @@ namespace Veterinaria.Api.Controllers
             );
 
             var token = new JwtSecurityToken(header, payload);
-
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        [HttpGet("TestConeccion")]
-        public IActionResult TestConeccion()
-        {
-            try
-            {
-                var result = new
-                {
-                    ConnectionMySql = _configuration["ConnectionStrings:ConnectionMySql"],
-                    ConnectionSqlServer = _configuration["ConnectionStrings:ConnectionSqlServer"]
-                };
-
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return StatusCode(500, err.Message);
-            }
-        }
-
-        [HttpGet("Config")]
-        public IActionResult GetConfig()
-        {
-            try
-            {
-                var connectionStringMySql = _configuration["ConnectionStrings:ConnectionMySql"];
-                var connectionStringSqlServer = _configuration["ConnectionStrings:ConnectionSqlServer"];
-
-                var result = new
-                {
-                    connectionStringMySql = connectionStringMySql ?? "MySQL NO CONFIGURADO",
-                    connectionStringSqlServer = connectionStringSqlServer ?? "SQL SERVER NO CONFIGURADO",
-                    AllConnectionStrings = _configuration.GetSection("ConnectionStrings")
-                        .GetChildren()
-                        .Select(x => new { x.Key, x.Value }),
-                    Environment = _configuration["ASPNETCORE_ENVIRONMENT"] ?? "ASPNETCORE_ENVIRONMENT NO CONFIGURADO",
-                    Authentication = _configuration.GetSection("Authentication")
-                        .GetChildren()
-                        .Select(x => new { x.Key, x.Value })
-                };
-
-                return Ok(result);
-            }
-            catch (Exception err)
-            {
-                return StatusCode(500, err.Message);
-            }
         }
     }
 }

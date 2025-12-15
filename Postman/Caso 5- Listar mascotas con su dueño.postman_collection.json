@@ -1,0 +1,32 @@
+{
+	"info": {
+		"_postman_id": "217ca8cd-a2d9-4e7d-8c43-25b87c7db654",
+		"name": "Caso 5: Listar mascotas con su dueño",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Lista de mascotas con dueño",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Mascota/listar-mascotas-con-dueno",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Mascota",
+						"listar-mascotas-con-dueno"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

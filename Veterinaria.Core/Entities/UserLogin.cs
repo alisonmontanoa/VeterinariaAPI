@@ -6,9 +6,24 @@ using System.Threading.Tasks;
 
 namespace Veterinaria.Core.Entities
 {
+    /// <summary>
+    /// Entidad utilizado para autenticacion de usuarios.
+    /// </summary>
+    /// <remarks>
+    /// Se utiliza en el proceso de login para obtener un token JWT.
+    /// </remarks>
     public class UserLogin
     {
-        public string User { get; set; }
+        /// <summary>
+        /// Usuario o login.
+        /// </summary>
+        /// <example>admin</example>
+        public string Login { get; set; }
+
+        /// <summary>
+        /// Contraseña del usuario.
+        /// </summary>
+        /// <example>admin123</example>
         public string Password { get; set; }
     }
 }

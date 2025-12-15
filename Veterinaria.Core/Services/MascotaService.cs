@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Exceptions;
@@ -25,7 +26,7 @@ namespace Veterinaria.Core.Services
 
         public async Task<int> RegistrarMascotaAsync(MascotaDto mascotaDto)
         {
-            // Regla 1: El duenio debe existir
+            // Regla 1: El dueno debe existir
             var dueno = await _unitOfWork.Duenos.GetByIdAsync(mascotaDto.DuenoId);
             if (dueno == null)
                 throw new BusinessException("No se puede registrar una mascota sin un duenio valido.");
@@ -40,11 +41,11 @@ namespace Veterinaria.Core.Services
                 .Where(m => m.DuenoId == mascotaDto.DuenoId);
 
             if (mascotasDelDueno.Any(m => m.Nombre.Equals(mascotaDto.Nombre, StringComparison.OrdinalIgnoreCase)))
-                throw new BusinessException("El duenio ya tiene una mascota con ese nombre.");
+                throw new BusinessException("El dueno ya tiene una mascota con ese nombre.");
 
-            // Regla 4: Máximo 3 mascotas
+            // Regla 4: Maximo 3 mascotas
             if (mascotasDelDueno.Count() >= 3)
-                throw new BusinessException("El duenio no puede registrar mas de 3 mascotas.");
+                throw new BusinessException("El dueno no puede registrar mas de 3 mascotas.");
 
             // Registro
             var mascota = _mapper.Map<Mascota>(mascotaDto);
@@ -52,11 +53,6 @@ namespace Veterinaria.Core.Services
             await _unitOfWork.SaveChangesAsync();
 
             return mascota.Id;
-        }
-
-        public async Task<IEnumerable<Mascota>> ObtenerMascotasAsync()
-        {
-            return await _unitOfWork.Mascotas.GetAllAsync();
         }
 
         public async Task<Mascota?> ObtenerMascotaPorIdAsync(int id)
@@ -85,7 +81,7 @@ namespace Veterinaria.Core.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Mascota>> ObtenerMascotasAsync(MascotaQueryFilter filters)
+        public async Task<PagedList<MascotaDto>> ObtenerMascotasAsync(MascotaQueryFilter filters)
         {
             var mascotas = await _unitOfWork.Mascotas.GetAllAsync();
 
@@ -101,8 +97,57 @@ namespace Veterinaria.Core.Services
             if (filters.Edad.HasValue)
                 mascotas = mascotas.Where(m => m.Edad == filters.Edad.Value);
 
+            var mascotasDto = _mapper.Map<IEnumerable<MascotaDto>>(mascotas);
+
+            return PagedList<MascotaDto>.Create(
+                mascotasDto,
+                filters.PageNumber,
+                filters.PageSize
+            );
+        }
+
+        // Obtener Mascotas con Dueno
+        private async Task<IEnumerable<Mascota>> ObtenerMascotasConDuenoBaseAsync()
+        {
+            var mascotas = await _unitOfWork.Mascotas.GetAllAsync();
             return mascotas;
         }
 
+        public async Task<PagedList<MascotaConDuenoDto>> ListarMascotasConDuenoAsync(MascotaConDuenoQueryFilter filters)
+        {
+            var mascotas = await ObtenerMascotasConDuenoBaseAsync();
+
+            // Filtros 
+            if (!string.IsNullOrWhiteSpace(filters.NombreMascota))
+            {
+                mascotas = mascotas.Where(m =>
+                    m.Nombre.Contains(filters.NombreMascota, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filters.Especie))
+            {
+                mascotas = mascotas.Where(m =>
+                    m.Especie.Equals(filters.Especie, StringComparison.OrdinalIgnoreCase));
+            }
+
+            var resultado = mascotas.Select(m => new MascotaConDuenoDto
+            {
+                MascotaId = m.Id,
+                NombreMascota = m.Nombre,
+                Especie = m.Especie,
+                Raza = m.Raza,
+                Edad = m.Edad,
+
+                NombreDueno = m.Dueno.Nombre,
+                TelefonoDueno = m.Dueno.Telefono,
+                DireccionDueno = m.Dueno.Direccion
+            });
+
+            return PagedList<MascotaConDuenoDto>.Create(
+                resultado,
+                filters.PageNumber,
+                filters.PageSize
+            );
+        }
     }
 }

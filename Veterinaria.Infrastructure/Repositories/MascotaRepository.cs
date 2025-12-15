@@ -17,11 +17,8 @@ namespace Veterinaria.Infrastructure.Repositories
     {
         private readonly IDapperContext _dapper;
 
-        // private readonly VeterinariaContext _context;
-
         public MascotaRepository(VeterinariaContext context, IDapperContext dapper) : base(context)
         {
-            //_context = context;
             _dapper = dapper;
         }
 

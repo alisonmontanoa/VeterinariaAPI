@@ -25,5 +25,25 @@ namespace Veterinaria.Infrastructure.Queries
                 AND (@Descripcion IS NULL OR LOWER(Descripcion) LIKE CONCAT('%', LOWER(@Descripcion), '%'))
             ORDER BY Id DESC;
         ";
+
+        // ===== PAGINACION DAPPER =====
+
+        public static string ServicioCountSqlServer = @"
+        SELECT COUNT(*)
+        FROM Servicio
+        WHERE 1=1
+            AND (@Nombre IS NULL OR LOWER(Nombre) LIKE '%' + LOWER(@Nombre) + '%')
+            AND (@Descripcion IS NULL OR LOWER(Descripcion) LIKE '%' + LOWER(@Descripcion) + '%')
+        ";
+
+        public static string ServicioPagedSqlServer = @"
+        SELECT Id, Nombre, Descripcion, Precio
+        FROM Servicio
+        WHERE 1=1
+            AND (@Nombre IS NULL OR LOWER(Nombre) LIKE '%' + LOWER(@Nombre) + '%')
+            AND (@Descripcion IS NULL OR LOWER(Descripcion) LIKE '%' + LOWER(@Descripcion) + '%')
+        ORDER BY Id DESC
+        OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY
+        ";
     }
 }

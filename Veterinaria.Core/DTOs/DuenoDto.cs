@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace Veterinaria.Core.DTOs
 {
     /// <summary>
-    /// Objeto de transferencia para devolver información de un dueño.
+    /// DTO que representa la informacion de un dueño.
     /// </summary>
     /// <remarks>
-    /// Se utiliza en las respuestas de la API para no exponer directamente la entidad.
+    /// Se utiliza para registrar y consultar dueños dentro del sistema veterinario.
     /// </remarks>
     public class DuenoDto
     {
         /// <summary>
         /// Identificador unico del dueño.
         /// </summary>
-        /// <example>12</example>
+        /// <example>1</example>
         public int Id { get; set; }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Veterinaria.Core.DTOs
         /// <summary>
         /// Direccion del domicilio del dueño.
         /// </summary>
-        /// <example>Zona Norte, Cochabamba</example>
+        /// <example>Calle Calama #564</example>
         public string Direccion { get; set; } = null!;
     }
 }

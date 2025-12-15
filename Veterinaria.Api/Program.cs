@@ -1,10 +1,14 @@
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.Interfaces;
 using Veterinaria.Core.Services;
 using Veterinaria.Infrastructure.Data;
@@ -12,9 +16,6 @@ using Veterinaria.Infrastructure.Filters;
 using Veterinaria.Infrastructure.Mappings;
 using Veterinaria.Infrastructure.Repositories;
 using Veterinaria.Infrastructure.Validators;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Veterinaria.Core.CustomEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,7 +108,9 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Authentication:Issuer"],
         ValidAudience = builder.Configuration["Authentication:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"])
+            Encoding.UTF8.GetBytes(
+                builder.Configuration["Authentication:SecretKey"]
+            )
         )
     };
 });
@@ -123,7 +126,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Veterinaria API",
         Version = "v1",
-        Description = "Documentacion de la API de Veterinaria (.NET 9)",
+        Description = "Documentación de la API para gestionar el sistema de Veterinaria",
         Contact = new OpenApiContact
         {
             Name = "Equipo de Desarrollo Veterinaria",
@@ -134,22 +137,20 @@ builder.Services.AddSwaggerGen(options =>
     // Incluir comentarios XML
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    options.IncludeXmlComments(xmlPath);
+    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
 
-    // Mostrar anotaciones [SwaggerOperation]
-    options.EnableAnnotations();
-
-    // CONFIGURACION JWT PARA SWAGGER
+    // Incluir seguridad JWT en Swagger
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
+        Description = "Autenticación JWT en formato 'Bearer token'. Ejemplo: \"Bearer {token}\"",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    // Aplicar el requerimiento de seguridad en todos los endpoints
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -158,12 +159,9 @@ builder.Services.AddSwaggerGen(options =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
+                }
             },
-            new List<string>()
+            new string[] {}
         }
     });
 });

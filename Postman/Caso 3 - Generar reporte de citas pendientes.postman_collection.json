@@ -1,0 +1,32 @@
+{
+	"info": {
+		"_postman_id": "ed9a190a-b0ac-4985-a90f-a75129fcf7f2",
+		"name": "Caso 3 - Generar reporte de citas pendientes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47633944"
+	},
+	"item": [
+		{
+			"name": "Obtener citas pendientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7220/api/v1/Cita/reporte-citas-pendientes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7220",
+					"path": [
+						"api",
+						"v1",
+						"Cita",
+						"reporte-citas-pendientes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

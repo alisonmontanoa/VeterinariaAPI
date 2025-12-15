@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Veterinaria.Core.CustomEntities;
 using Veterinaria.Core.DTOs;
 using Veterinaria.Core.Entities;
 using Veterinaria.Core.Exceptions;
@@ -15,10 +16,12 @@ namespace Veterinaria.Core.Services
     public class VeterinarioService : IVeterinarioService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public VeterinarioService(IUnitOfWork unitOfWork)
+        public VeterinarioService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<int> RegistrarVeterinarioAsync(VeterinarioDto veterinarioDto)
@@ -54,7 +57,7 @@ namespace Veterinaria.Core.Services
 
 
         }
-        public async Task<IEnumerable<Veterinario>> ObtenerVeterinariosAsync(VeterinarioQueryFilter filters)
+        public async Task<PagedList<VeterinarioDto>> ObtenerVeterinariosAsync(VeterinarioQueryFilter filters)
         {
             var veterinarios = await _unitOfWork.Veterinarios.GetAllAsync();
 
@@ -64,7 +67,13 @@ namespace Veterinaria.Core.Services
             if (!string.IsNullOrWhiteSpace(filters.Especialidad))
                 veterinarios = veterinarios.Where(v => v.Especialidad.Contains(filters.Especialidad, StringComparison.OrdinalIgnoreCase));
 
-            return veterinarios;
+            var veterinariosDto = _mapper.Map<IEnumerable<VeterinarioDto>>(veterinarios);
+
+            return PagedList<VeterinarioDto>.Create(
+                veterinariosDto,
+                filters.PageNumber,
+                filters.PageSize
+            );
         }
     }
 }

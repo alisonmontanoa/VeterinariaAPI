@@ -9,6 +9,16 @@
 		{
 			"name": "Dueño y Mascota 1",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgxOTI3MCwiZXhwIjoxNzY1ODIwMTcwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.zJS0gojSLwgvxl0EXpq-O-rEt7vkAHdzxNjcMiWrwKQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -40,6 +50,16 @@
 		{
 			"name": "Dueño y Mascota 2",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgxOTI3MCwiZXhwIjoxNzY1ODIwMTcwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.zJS0gojSLwgvxl0EXpq-O-rEt7vkAHdzxNjcMiWrwKQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -71,6 +91,16 @@
 		{
 			"name": "Dueño y Mascota 3",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbiI6ImFkbWluIiwiTmFtZSI6IkFkbWluaXN0cmFkb3IgUHJpbmNpcGFsIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc2NTgxOTI3MCwiZXhwIjoxNzY1ODIwMTcwLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjIwIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIyMCJ9.zJS0gojSLwgvxl0EXpq-O-rEt7vkAHdzxNjcMiWrwKQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {

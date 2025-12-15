@@ -17,15 +17,12 @@ namespace Veterinaria.Infrastructure.Repositories
     {
         private readonly IDapperContext _dapper;
 
-        // private readonly VeterinariaContext _context;
-
         public CitaRepository(VeterinariaContext context, IDapperContext dapper) : base(context)
         {
-            //_context = context;
             _dapper = dapper;
         }
 
-        // Metodo personalizado: citas por veterinario
+        // Citas por veterinario
         public async Task<IEnumerable<Cita>> GetCitasByVeterinarioAsync(int veterinarioId)
         {
             return await _context.Citas

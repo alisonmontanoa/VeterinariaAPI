@@ -21,7 +21,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7220/api/servicio/registrar-servicio",
+					"raw": "https://localhost:7220/api/v1/Servicio/registrar-servicio",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -29,7 +29,8 @@
 					"port": "7220",
 					"path": [
 						"api",
-						"servicio",
+						"v1",
+						"Servicio",
 						"registrar-servicio"
 					]
 				}
@@ -51,7 +52,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7220/api/servicio/registrar-servicio",
+					"raw": "https://localhost:7220/api/v1/Servicio/registrar-servicio",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -59,7 +60,8 @@
 					"port": "7220",
 					"path": [
 						"api",
-						"servicio",
+						"v1",
+						"Servicio",
 						"registrar-servicio"
 					]
 				}
